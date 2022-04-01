@@ -23,25 +23,42 @@ import "../style/index.css";
     }
  */
 function render(variables = {}) {
+  // eslint-disable-next-line no-console
   console.log("These are the current variables: ", variables); //print on the console
   // here we ask the logical questions to make decisions on how to build the html
   // if includeCover==false then we reset the cover code without the <img> tag to make the cover transparent.
   let cover = `<div class="cover"><img src="${variables.background}" /></div>`;
   if (variables.includeCover == false) cover = "<div class='cover'></div>";
 
+  let fullname = variables.name + " " + variables.lastname;
+  // let position = variables.socialMediaPosition;
+  Object.getOwnPropertyNames(variables).forEach(campo => {
+    if (!variables[campo]) variables[campo] = " ";
+  });
+
+  let redes = [];
+  ["instagram", "github", "twitter", "linkedin", "facebook"].forEach(red => {
+    if (variables[red] != " ") {
+      redes.push(
+        `<li><a href="https://${red}.com/${variables[red]}}"><i class="fab fa-${red}"></i></a></li>`
+      );
+    }
+  });
+  console.log(redes);
+
   // reset the website body with the new html output
+
   document.querySelector("#widget_content").innerHTML = `<div class="widget">
             ${cover}
+            
           <img src="${variables.avatarURL}" class="photo" />
-          <h1>Lucy Boilett</h1>
-          <h2>Web Developer</h2>
-          <h3>Miami, USA</h3>
-          <ul class="position-right">
-            <li><a href="https://twitter.com/4geeksacademy"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="https://github.com/4geeksacademy"><i class="fab fa-github"></i></a></li>
-            <li><a href="https://linkedin.com/4geeksacademy"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="https://instagram.com/4geeksacademy"><i class="fab fa-instagram"></i></a></li>
-          </ul>
+          <h1>${fullname}</h1>
+          <h2>${variables.role}</h2>
+          <h3>${variables.city}</h3>
+          <ul class="${variables.socialMediaPosition}">
+          ${redes.join()}
+        </ul>
+
         </div>
     `;
 }
@@ -89,3 +106,29 @@ window.onload = function() {
     });
   });
 };
+
+/*          
+            let cltwitter = "fab fa-twitter";
+            let clgithub = "fab fa-github";
+            let cllinkedin = "fab fa-linkedin";
+            let clinstagram = "fab fa-instagram";
+
+             if (!variables["twitter"]) cltwitter = " ";
+             if (!variables["instagram"]) clinstagram = " ";
+             if (!variables["linkedin"]) cllinkedin = " ";
+             if (!variables["github"]) clgithub = " ";
+
+            <ul class="${position}">
+            <li><a href="https://twitter.com/${
+              variables.twitter
+            }"><i class=${cltwitter}></i></a></li>
+            <li><a href="https://github.com/${
+              variables.github
+            }"><i class=${clgithub}></i></a></li>
+            <li><a href="https://linkedin.com/${
+              variables.linkedin
+            }"><i class=${cllinkedin}></i></a></li>
+            <li><a href="https://instagram.com/${
+              variables.instagram
+            }"><i class=${clinstagram}></i></a></li>
+          </ul>*/
